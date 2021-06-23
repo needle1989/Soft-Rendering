@@ -4,6 +4,7 @@
 #include "Light.h"
 #include <Windows.h>
 #include <math.h>
+#include "Color.h"
 
 #define STATE_DRAW_TEX 1
 #define STATE_DRAW_LINE 2
@@ -34,8 +35,8 @@ void Device::init(int w, int h, uint32* fb, Transform* ts, int** tex, Light* l)
 	zbuffer = (float*)malloc(w * h * sizeof(float));
 	memset(zbuffer, 0, w * h * sizeof(float));
 
-	background = 0xc0c0c0; 
-	foreground = 0xffffff; 
+	background = RGB(123, 195, 211);
+	foreground = RGB(123, 195, 211);
 
 	transform = ts;
 	textures = tex;
@@ -47,8 +48,10 @@ void Device::clear()
 	float inv_h = (float)1 / height;
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
-			int c = (float)0xc0 * inv_h * (height - y);
-			framebuffer[y][x] = (c << 16| c << 8 | c);
+			int r = (float)0xb0 * inv_h * (height - y);
+			int g = (float)0xc0 * inv_h * (height - y);
+			int b = (float)0xd0 * inv_h * (height - y);
+			framebuffer[y][x] = (r << 16| g << 8 | b);
 
 			zbuffer[y * width + x] = 1.f;
 		}

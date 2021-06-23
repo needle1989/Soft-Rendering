@@ -149,6 +149,7 @@
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Color.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Device.h" />
     <ClInclude Include="Light.h" />

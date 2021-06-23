@@ -154,9 +154,9 @@ int* CreateTexture()
 		int c1 = c;
 		for (int j = 0; j < 10; j++) {
 			color[i][j] = c1;
-			c1 = c1 == 0xffffff ? 0x11eeee : 0xffffff;
+			c1 = c1 == 0xC0C0C0 ? 0x11eeee : 0xC0C0C0;
 		}
-		c = c == 0xffffff ? 0x11eeee : 0xffffff;
+		c = c == 0xC0C0C0 ? 0x11eeee : 0xC0C0C0;
 	}
 
 	// 100 x 100
@@ -394,7 +394,7 @@ void DrawModel(Vertex* pVertexs, int vsize, Face* pFaces, int fsize, float theta
 
 void SetCamera(float x, float y, float z)
 {
-	Vector eye = { x, y, z, 1.f }, at = { 0.f, 0.f, 0.f, 1.f }, up = {0.f, 1.f, 0.f, 1.f};
+	Vector eye = { x, y, z, 1.f }, at = { 4.f, 0.f, 1.f, 1.f }, up = {0.f, 1.f, 0.f, 1.f};
 	Matrix m;
 	MatrixSetLookAt(m, eye, at, up);
 	transform->setView(m);
@@ -414,6 +414,7 @@ void TransformLight(Light& light, float theta)
 
 #define VK_J 0x4A
 #define VK_K 0x4B
+#define VK_L 0x4C
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, int showCmd)
 {
@@ -443,8 +444,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 	int vsize, fsize;
 	Vertex* pVertexs;
 	Face* pFaces;
-	LoadMesh("models/cow.obj", pVertexs, vsize, pFaces, fsize);
-
+	LoadMesh("models/teapot.obj", pVertexs, vsize, pFaces, fsize);
+	BOOLEAN mod = false;
 	float theta = 1.f;
 	float dist = 3.f;
 
@@ -476,9 +477,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 		if (screen->getKeyUpEvent(VK_K)) // K key
 			device->autoChangeCullMode();
 
+		if (screen->getKeyUpEvent(VK_L)) // L key
+		{
+			mod = !mod;
+		}
+		if (mod == true) {
+			DrawModel(pVertexs, vsize, pFaces, fsize, theta);
+		}
+		else {
+			DrawBox(theta);
+		}
+
 		//DrawLine();
-		DrawBox(theta);
-		DrawModel(pVertexs, vsize, pFaces, fsize, theta);
 		//DrawPlane(theta);
 		//DrawTetrahedron(theta);
 		//DrawColorTriangle();
