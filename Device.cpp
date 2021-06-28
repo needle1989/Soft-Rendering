@@ -154,6 +154,28 @@ Color BilinearInterp(int *tex, float u, float v)
 	return c;
 }
 
+void Device::getSpec(float dot, Color& specColor, const Vector& reflect)
+{
+	float ks = 0.9;
+	float alpha = 32;
+	Vector view = { 4.f, 0.f, 1.f, 1.f };
+	VectorNormalize(view);
+	float spec = pow(max(VectorDotProduct(reflect, view), 0), alpha);
+	Color specular = { 0,0,0 };
+	specColor.r = ks * spec * light->color.r;
+	specColor.g = ks * spec * light->color.g;
+	specColor.b = ks * spec * light->color.b;
+}
+
+void Device::calReflect(float dot, const Vector& normal, Vector& reflect)
+{
+	reflect.x = light->direction.x - 2 * dot * normal.x;
+	reflect.y = light->direction.y - 2 * dot * normal.y;
+	reflect.z = light->direction.z - 2 * dot * normal.z;
+	reflect.w = light->direction.w - 2 * dot * normal.w;
+	VectorNormalize(reflect);
+}
+
 void Device::drawPoint(const Vector& p, const Color& color, const Texcoord& tc, const Vector& normal)
 {
 	int y = (int)p.y;
@@ -189,21 +211,10 @@ void Device::drawPoint(const Vector& p, const Color& color, const Texcoord& tc, 
 		//计算reflect
 		Vector reflect = { 0.f,0.f,0.f,0.f };
 		
-		reflect.x = light->direction.x - 2 * n_dot_l * normal.x;
-		reflect.y = light->direction.y - 2 * n_dot_l * normal.y;
-		reflect.z = light->direction.z - 2 * n_dot_l * normal.z;
-		reflect.w = light->direction.w - 2 * n_dot_l * normal.w;
+		calReflect(n_dot_l, normal, reflect);
 
-		float ks = 0.9;
-		float alpha = 32;
-		Vector view = { 4.f, 0.f, 1.f, 1.f };
-		VectorNormalize(reflect);
-		VectorNormalize(view);
-		float spec = pow(max(VectorDotProduct(reflect, view), 0), alpha);
 		Color specular = { 0,0,0 };
-		specular.r = ks*spec*light->color.r;
-		specular.g = ks * spec * light->color.g;
-		specular.b = ks * spec * light->color.b;
+		getSpec(n_dot_l, specular, reflect);
 
 		// 默认环境光
 		Color ambient = { 1.0f, 1.0f, 1.0f };

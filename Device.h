@@ -29,6 +29,8 @@ public:
 	void drawTriangle(const Vertex& v1, const Vertex& v2, const Vertex& v3);
 
 private:
+	void getSpec(float dot, Color& specColor, const Vector& reflect);
+	void calReflect(float dot, const Vector& normal, Vector& reflectl);
 	Transform* transform;
 	Light* light;
 	int** textures;
