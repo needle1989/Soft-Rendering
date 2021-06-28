@@ -186,6 +186,25 @@ void Device::drawPoint(const Vector& p, const Color& color, const Texcoord& tc, 
 		// light
 		float n_dot_l = VectorDotProduct(light->direction, normal);
 
+		//计算reflect
+		Vector reflect = { 0.f,0.f,0.f,0.f };
+		
+		reflect.x = light->direction.x - 2 * n_dot_l * normal.x;
+		reflect.y = light->direction.y - 2 * n_dot_l * normal.y;
+		reflect.z = light->direction.z - 2 * n_dot_l * normal.z;
+		reflect.w = light->direction.w - 2 * n_dot_l * normal.w;
+
+		float ks = 0.9;
+		float alpha = 32;
+		Vector view = { 4.f, 0.f, 1.f, 1.f };
+		VectorNormalize(reflect);
+		VectorNormalize(view);
+		float spec = pow(max(VectorDotProduct(reflect, view), 0), alpha);
+		Color specular = { 0,0,0 };
+		specular.r = ks*spec*light->color.r;
+		specular.g = ks * spec * light->color.g;
+		specular.b = ks * spec * light->color.b;
+
 		// 默认环境光
 		Color ambient = { 1.0f, 1.0f, 1.0f };
 		float intensity = 0.3;
@@ -198,14 +217,14 @@ void Device::drawPoint(const Vector& p, const Color& color, const Texcoord& tc, 
 		// blend
 		Color diffuse = { 0.f, 0.f, 0.f };
 		if (n_dot_l > 0) {
-			diffuse.r = tex_color.r * n_dot_l;
-			diffuse.g = tex_color.g * n_dot_l;
-			diffuse.b = tex_color.b * n_dot_l;
+			diffuse.r = tex_color.r * n_dot_l*0.7;
+			diffuse.g = tex_color.g * n_dot_l*0.7;
+			diffuse.b = tex_color.b * n_dot_l*0.7;
 		}
 
-		ambient.r += diffuse.r;
-		ambient.g += diffuse.g;
-		ambient.b += diffuse.b;
+		ambient.r += diffuse.r+specular.r;
+		ambient.g += diffuse.g+specular.g;
+		ambient.b += diffuse.b+specular.b;
 
 		ambient.r = ambient.r > 1.f ? 1.f : ambient.r;
 		ambient.g = ambient.g > 1.f ? 1.f : ambient.g;
