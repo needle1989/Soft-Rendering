@@ -45,6 +45,16 @@ int Screen::init(int width, int height, LPCTSTR title)
 	this->width = width;
 	this->height = height;
 
+	/*AdjustWindowRect(&rect, GetWindowLong(wndHandle, GWL_STYLE), 0);
+	int wx = rect.right - rect.left;???
+	int wy = rect.bottom - rect.top;
+	this->width = width;
+	this->height = height;
+	int sx = (GetSystemMetrics(SM_CXSCREEN) - wx) / 2;
+	int sy = (GetSystemMetrics(SM_CYSCREEN) - wy) / 2;
+	if (sy < 0) sy = 0;
+	SetWindowPos(wndHandle, NULL, sx, sy, wx, wy, (SWP_NOCOPYBITS | SWP_NOZORDER | SWP_SHOWWINDOW));*/
+
 	AdjustWindowRect(&rect, GetWindowLong(wndHandle, GWL_STYLE), 0);
 	int wx = rect.right - rect.left;
 	int wy = rect.bottom - rect.top;

@@ -242,7 +242,8 @@ void Device::drawPoint(const Vector& p, const Color& color, const Texcoord& tc, 
 		ambient.b = ambient.b > 1.f ? 1.f : ambient.b;
 
 		fcolor = RGB(int(ambient.r * 255), int(ambient.g * 255), int(ambient.b * 255)); 
-	} else if (s & STATE_DRAW_COLOR) {
+	} 
+	else if (s & STATE_DRAW_COLOR) {
 		int r = color.r * 255;
 		int g = color.g * 255;
 		int b = color.b * 255;

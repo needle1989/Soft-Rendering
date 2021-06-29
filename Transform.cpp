@@ -10,7 +10,6 @@ void Transform::init(int w, int h)
 	MatrixSetIdentity(view);
 	float aspect = (float)width / height;
 	MatrixSetPerspective(projection, PI * 0.5f, aspect, 1.f, 500.f);
-
 	update();
 }
 
@@ -36,8 +35,8 @@ void Transform::applyMV(Vector& b, const Vector& a)
 void Transform::homogenize(Vector& b, const Vector& a)
 {
 	float rhw = 1 / a.w;
-	b.x = (1.f + a.x * rhw) * width * 0.5;	// ÆÁÄ»×ø˜Ë
-	b.y = (1.f - a.y * rhw) * height * 0.5; // ÆÁÄ»×ø˜Ë top down
+	b.x = (1.f + a.x * rhw) * width * 0.5;	// ÆÁÄ»×ø±ê
+	b.y = (1.f - a.y * rhw) * height * 0.5; // ÆÁÄ»×ø±ê top down
 	b.z = a.z * rhw;
 	b.w = 1.0f;
 }

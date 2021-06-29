@@ -134,7 +134,7 @@ void FixNormal(Vertex& v1, Vertex& v2, Vertex& v3);
 
 void DrawPlane(const Vertex& v1, const Vertex& v2, const Vertex& v3, const Vertex& v4)
 {
-	// 必须重新制定一下纹理，不然就乱掉了
+	// 重新制定纹理，不然就乱掉了
 	Vertex t1 = v1, t2 = v2, t3 = v3, t4 = v4;
 	t1.tex.u = 0.f; t2.tex.u = 1.f; t3.tex.u = 1.f; t4.tex.u = 0.f;
 	t1.tex.v = 0.f; t2.tex.v = 0.f; t3.tex.v = 1.f; t4.tex.v = 1.f;

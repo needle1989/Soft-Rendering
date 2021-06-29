@@ -7,7 +7,8 @@
 float VectorLength(Vector v)
 {
 	float sq = v.x * v.x + v.y * v.y + v.z * v.z;
-	return (float)sqrt(sq);
+	float value = (float)sqrt(sq);
+	return value;
 }
 
 // add
@@ -31,7 +32,8 @@ void VectorSub(Vector& v, const Vector& x, const Vector& y)
 // dot product
 float VectorDotProduct(const Vector& x, const Vector& y)
 {
-	return x.x * y.x + x.y * y.y + x.z * y.z;
+	float value = x.x * y.x + x.y * y.y + x.z * y.z;
+	return value;
 }
 
 // cross product
